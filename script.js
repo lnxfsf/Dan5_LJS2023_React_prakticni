@@ -70,10 +70,35 @@ function najkrace_prikazivan(){
 
 
 function top_5(){
-    let niz_animea;
-    
-    for(elem of data){
+    let niz_animea=[];
 
+    for(elem of data){
+        let tren_anime={
+            naziv: elem.title,
+            skor: elem.score,
+            trajanje_epizode: elem.duration,
+            slika: elem.images.jpg.image_url,
+            trejler: elem.trailer.url,
+        };
+        niz_animea.push(tren_anime);
+    }
+
+    //sortirao sam niz obicnim bubble sortom, jer bi vise posla bilo da pravim prioritetni red
+    
+    for(let i=0;i<niz_animea.length;i++){
+        for(let j=0;j<niz_animea.length-1;j++){
+            if(niz_animea[j].skor<niz_animea[j+1].skor){
+                let temp=niz_animea[j];
+                niz_animea[j]=niz_animea[j+1];
+                niz_animea[j+1]=temp;
+            }
+        }
+    }
+
+    let lista=document.getElementById("list");
+    for(let i=0;i<5;i++){
+        let elem_liste="<li>"+niz_animea[i].naziv + " | " + niz_animea[i].skor + " | " + niz_animea[i].trajanje_epizode + " | "+ niz_animea[i].slika + " | "+ niz_animea[i].trailer+"</li>";
+        lista.innerHTML += elem_liste; 
     }
 }
 
@@ -83,6 +108,6 @@ function top_5(){
 //duze_od_sat_vremena();
 //film_tip();
 //console.log(najkrace_prikazivan());
-
+top_5();
 })
 
