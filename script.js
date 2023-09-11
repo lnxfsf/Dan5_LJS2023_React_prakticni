@@ -69,16 +69,26 @@ function najkrace_prikazivan(){
 }
 
 
+
 function top_5(){
     let niz_animea=[];
 
     for(elem of data){
+
+
+	    // kao regex kvazi..
+	let trejlerUrl = elem.trailer.url ? elem.trailer.url.replace("watch?v=", "embed/") : null;
+
         let tren_anime={
             naziv: elem.title,
             skor: elem.score,
             trajanje_epizode: elem.duration,
             slika: elem.images.jpg.image_url,
-            trejler: elem.trailer.url,
+            // trejler: elem.trailer.url,
+
+
+		trejler: trejlerUrl,
+
         };
         niz_animea.push(tren_anime);
     }
@@ -95,11 +105,50 @@ function top_5(){
         }
     }
 
-    let lista=document.getElementById("list");
-    for(let i=0;i<5;i++){
-        let elem_liste="<li>"+niz_animea[i].naziv + " | " + niz_animea[i].skor + " | " + niz_animea[i].trajanje_epizode + " | "+ niz_animea[i].slika + " | "+ niz_animea[i].trailer+"</li>";
-        lista.innerHTML += elem_liste; 
-    }
+	let table = document.createElement("table");
+        table.border = "1";
+        let thead = table.createTHead();
+        let headerRow = thead.insertRow(0);
+        let headers = ["Title", "Score", "Duration", "Image", "Trailer"];
+        
+        for (let i = 0; i < headers.length; i++) {
+            let header = document.createElement("th");
+            header.textContent = headers[i];
+            headerRow.appendChild(header);
+        }
+
+        let lista = document.getElementById("list");
+        lista.appendChild(table);
+
+	// tabela.. 
+        for (let i = 0; i < 5; i++) {
+            let row = table.insertRow(i + 1);
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            let cell4 = row.insertCell(3);
+            let cell5 = row.insertCell(4);
+            cell1.innerHTML = niz_animea[i].naziv;
+            cell2.innerHTML = niz_animea[i].skor;
+            cell3.innerHTML = niz_animea[i].trajanje_epizode;
+            cell4.innerHTML = `<img src="${niz_animea[i].slika}" alt="${niz_animea[i].naziv}" width="100">`;
+
+
+cell5.innerHTML = `<iframe width="560" height="315" src="${niz_animea[i].trejler}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
+		console.log(niz_animea[i].trejler);
+
+                  }
+
+
+
+
+
+    // let lista=document.getElementById("list");
+    // for(let i=0;i<5;i++){
+    //     let elem_liste="<li>"+niz_animea[i].naziv + " | " + niz_animea[i].skor + " | " + niz_animea[i].trajanje_epizode + " | "+ niz_animea[i].slika + " | "+ niz_animea[i].trailer+"</li>";
+    //     lista.innerHTML += elem_liste; 
+    // }
 }
 
     ///---testiranje funkcija---///
